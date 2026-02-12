@@ -87,7 +87,7 @@ body {
               <button type="button" id="togglePassword" title="Show password" style="position:absolute; right:8px; top:36px; background:none; border:none; cursor:pointer;">👁️</button>
             </div>
 
-            <button type="submit" class="btn-primary">Login to Control Tower</button>
+      <button type="submit" id="loginBtn" class="btn-primary">Login to Control Tower</button>
         </form>
 
         <div class="login-links" style="margin-top:16px; display:flex; justify-content:space-between; gap:12px; align-items:center;">
@@ -117,8 +117,11 @@ body {
         e.preventDefault();
         const phoneNumber = document.getElementById('phoneNumber').value;
         const password = document.getElementById('password').value;
+        const btn = document.getElementById('loginBtn');
+        const originalText = btn ? btn.textContent : '';
 
         try {
+          if (btn) { btn.disabled = true; btn.textContent = 'Logging in...'; }
           const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -143,6 +146,8 @@ body {
         } catch (err) {
           console.error(err);
           customAlert('Network error', 'Login');
+        } finally {
+          if (btn) { btn.disabled = false; btn.textContent = originalText; }
         }
       });
     </script>

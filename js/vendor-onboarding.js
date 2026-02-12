@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', function () {
     regForm.addEventListener('submit', async function (e) {
       e.preventDefault();
 
+      // Loading state for submit button
+      const submitBtn = regForm.querySelector('button[type="submit"]');
+      const origBtnText = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Registering...'; }
+
       // Collect form values
       const payload = {
         vendorName: document.getElementById('vendorName')?.value || '',
@@ -85,6 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
       } catch (err) {
         console.error('Registration error', err);
         customAlert('Network error while registering. Please try again later.', 'Registration');
+      } finally {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = origBtnText; }
       }
     });
   }
