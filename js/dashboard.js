@@ -20,6 +20,26 @@ function checkAuthentication() {
 let _shareInProgress = false;
 
 // ========== DASHBOARD INITIALIZATION ==========
+// Helper: determine current route from either hash or path (/dashboard or /dashboard/shipments)
+function getRouteFromLocation() {
+  const hash = window.location.hash.replace('#', '').toLowerCase();
+  if (hash) return hash;
+
+  const path = window.location.pathname.replace(/\/+$|^\/+/, ''); // trim leading/trailing slashes
+  // look for 'dashboard' segment
+  const parts = path.split('/');
+  const idx = parts.indexOf('dashboard');
+  if (idx !== -1) {
+    const sub = parts[idx + 1] || '';
+    if (!sub) return 'dashboard';
+    // user-friendly mapping: /dashboard/sidebar -> settings view
+    if (sub.toLowerCase() === 'sidebar' || sub.toLowerCase() === 'settings') return 'settings';
+    return sub.toLowerCase();
+  }
+
+  return '';
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   // Ensure event listeners are attached (sidebar loader will call this again after injection)
   try { setupEventListeners(); } catch (e) { /* ignore */ }
@@ -27,8 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Apply modal style preference from saved settings
   try { applyModalStyleFromSettings(); } catch (e) { /* ignore */ }
 
-  // Load initial view based on hash (e.g. #shipments) or default to Dashboard
-  const hash = window.location.hash.replace('#', '').toLowerCase();
+  // Load initial view based on hash or path (e.g. /dashboard/shipments) or default to Dashboard
   const mapping = {
     'dashboard': 'Dashboard',
     'shipments': 'Shipments',
@@ -36,7 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
     'reports': 'Reports',
     'settings': 'Settings'
   };
-  const initialView = mapping[hash] || 'Dashboard';
+  const route = getRouteFromLocation();
+  const initialView = mapping[route] || 'Dashboard';
   try { switchView(initialView); } catch (e) { console.error('Failed to switch initial view', e); }
 });
 
@@ -64,18 +84,26 @@ function setupEventListeners() {
       // Get the navigation text (from the span, not the emoji)
       const navText = this.querySelector("span:last-child").textContent.trim();
 
-      // Update URL hash so view is bookmarkable
+      // Route name used by the SPA
       const route = this.getAttribute('data-route') || navText.toLowerCase().replace(/\s+/g, '-');
-      try { window.location.hash = route; } catch (e) { /* ignore */ }
+
+      // Update the browser URL using pushState so we get clean paths like /dashboard or /dashboard/shipments
+      try {
+        const path = route === 'dashboard' ? '/dashboard' : `/dashboard/${route}`;
+        history.pushState({}, '', path);
+      } catch (err) {
+        // Fallback to hash for older browsers
+        try { window.location.hash = route; } catch (e) { /* ignore */ }
+      }
 
       // Switch view based on section
       switchView(navText);
     });
   });
 
-  // Respond to back/forward hash changes
-  window.addEventListener('hashchange', function () {
-    const h = window.location.hash.replace('#', '').toLowerCase();
+  // Unified handler for route changes (supports hash and history API)
+  function handleRouteChange() {
+    const r = getRouteFromLocation();
     const map = {
       'dashboard': 'Dashboard',
       'shipments': 'Shipments',
@@ -83,16 +111,20 @@ function setupEventListeners() {
       'reports': 'Reports',
       'settings': 'Settings'
     };
-    const view = map[h] || 'Dashboard';
+    const view = map[r] || 'Dashboard';
 
     // Update active nav item visually
     navItems.forEach((nav) => {
-      const r = nav.getAttribute('data-route');
-      if (r === h) nav.classList.add('active'); else nav.classList.remove('active');
+      const rr = nav.getAttribute('data-route');
+      if (rr === r) nav.classList.add('active'); else nav.classList.remove('active');
     });
 
     switchView(view);
-  });
+  }
+
+  // React to back/forward navigation (history) and hashchanges
+  window.addEventListener('popstate', handleRouteChange);
+  window.addEventListener('hashchange', handleRouteChange);
 
   // Modal Close Buttons
   const closeButtons = document.querySelectorAll(".modal-close");

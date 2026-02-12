@@ -10,3 +10,15 @@
   # Don't force the redirect so requests for real files (login.html, signup.html)
   # will return the file. This keeps SPA fallback while preserving direct file access.
   force = false
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard.html"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/dashboard/*"
+  to = "/dashboard.html"
+  status = 200
+  force = false
