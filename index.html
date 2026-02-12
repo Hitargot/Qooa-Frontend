@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QOOA - Quick Start Demo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #059669 0%,
+          #047857 50%,
+          #065f46 100%
+        );
+        min-height: 100vh;
+        padding: 40px 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .header p {
+        font-size: 20px;
+        opacity: 0.9;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.2);
+      }
+
+      .card-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .card h2 {
+        font-size: 24px;
+        color: #1f2937;
+        margin-bottom: 12px;
+      }
+
+      .card p {
+        color: #6b7280;
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #047857;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      .btn:hover {
+        background: #065f46;
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: #f97316;
+      }
+
+      .btn-secondary:hover {
+        background: #ea580c;
+      }
+
+      .demo-data {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 32px;
+        color: white;
+        margin-top: 40px;
+      }
+
+      .demo-data h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .demo-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+      }
+
+      .demo-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 16px;
+        border-radius: 8px;
+      }
+
+      .demo-item strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .demo-item code {
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        opacity: 0.9;
+      }
+
+      .features {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-top: 40px;
+      }
+
+      .features h3 {
+        font-size: 24px;
+        color: #1f2937;
+        margin-bottom: 24px;
+      }
+
+      .feature-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .feature {
+        display: flex;
+        gap: 12px;
+        padding: 16px;
+        background: #f9fafb;
+        border-radius: 8px;
+      }
+
+      .feature-icon {
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+
+      .feature-text {
+        flex: 1;
+      }
+
+      .feature-text strong {
+        display: block;
+        color: #1f2937;
+        margin-bottom: 4px;
+      }
+
+      .feature-text p {
+        font-size: 14px;
+        color: #6b7280;
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 36px;
+        }
+
+        .cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🍅 QOOA Demo</h1>
+        <p>Fresh Tomatoes, Fair Prices - Complete Vendor Portal System</p>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">👋</div>
+          <h2>Vendor Registration</h2>
+          <p>
+            Start by registering as a new vendor. Experience the bilingual
+            onboarding flow (English/Pidgin).
+          </p>
+          <a href="signup.html" class="btn">Register Now</a>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🛒</div>
+          <h2>Vendor Portal</h2>
+          <p>
+            Access the main dashboard to place orders, track deliveries, and
+            manage your account.
+          </p>
+          <a href="login.html" class="btn">Open Portal</a>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h2>Admin Dashboard</h2>
+          <p>
+            View the B2B control tower with real-time shipment tracking and IoT
+            telemetry.
+          </p>
+          <a href="dashboard.html" class="btn btn-secondary">Admin View</a>
+        </div>
+      </div>
+
+      <div class="demo-data">
+        <h3>📝 Demo Credentials & Test Data</h3>
+        <div class="demo-list">
+          <div class="demo-item">
+            <strong>Admin Login (B2B):</strong>
+            <code>admin@qooa.com / qooa2024</code>
+          </div>
+          <div class="demo-item">
+            <strong>Current Price:</strong>
+            <code>₦18,500 per crate</code>
+          </div>
+          <div class="demo-item">
+            <strong>Test Phone:</strong>
+            <code>+234 808 123 4567</code>
+          </div>
+          <div class="demo-item">
+            <strong>Sample Market:</strong>
+            <code>Mile 12 Market, Lagos</code>
+          </div>
+          <div class="demo-item">
+            <strong>Test Stall:</strong>
+            <code>Shop 45, Block C</code>
+          </div>
+          <div class="demo-item">
+            <strong>Language Toggle:</strong>
+            <code>Top-right corner (🌐)</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="features">
+        <h3>✨ Key Features Demonstrated</h3>
+        <div class="feature-list">
+          <div class="feature">
+            <div class="feature-icon">🌐</div>
+            <div class="feature-text">
+              <strong>Bilingual Support</strong>
+              <p>Toggle between English and Nigerian Pidgin instantly</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">💰</div>
+            <div class="feature-text">
+              <strong>Live Pricing</strong>
+              <p>Real-time price updates with transparent calculation</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">📦</div>
+            <div class="feature-text">
+              <strong>Quick Orders</strong>
+              <p>Simple interface for fast ordering with quantity selector</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🔄</div>
+            <div class="feature-text">
+              <strong>Subscriptions</strong>
+              <p>Set up recurring weekly orders for regular customers</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🚚</div>
+            <div class="feature-text">
+              <strong>Real-Time Tracking</strong>
+              <p>Visual progress tracking from Kano to Lagos with stages</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🌡️</div>
+            <div class="feature-text">
+              <strong>IoT Quality Data</strong>
+              <p>Temperature monitoring and freshness scores displayed</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">💳</div>
+            <div class="feature-text">
+              <strong>Payment Integration</strong>
+              <p>Paystack and bank transfer options with receipts</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">⭐</div>
+            <div class="feature-text">
+              <strong>Feedback System</strong>
+              <p>Rate orders, report damage, and request refunds</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">📱</div>
+            <div class="feature-text">
+              <strong>Mobile-First</strong>
+              <p>Fully responsive design optimized for smartphones</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-text">
+              <strong>Secure Sessions</strong>
+              <p>Session management with vendor authentication</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">📊</div>
+            <div class="feature-text">
+              <strong>Quality Scoring</strong>
+              <p>Vendor quality scores based on feedback history</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-text">
+              <strong>Market-Specific</strong>
+              <p>Pre-configured Nigerian markets and business types</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-data" style="margin-top: 40px">
+        <h3>🚀 Testing Flow Recommendations</h3>
+        <ol style="line-height: 2">
+          <li>
+            <strong>Start with Registration:</strong> Try the onboarding flow
+            and test the language toggle
+          </li>
+          <li>
+            <strong>Place a Test Order:</strong> Use the quantity selector and
+            delivery time options
+          </li>
+          <li>
+            <strong>View Order Tracking:</strong> See the progress stages and
+            status updates
+          </li>
+          <li>
+            <strong>Test Payment Flow:</strong> Try both Paystack and bank
+            transfer options
+          </li>
+          <li>
+            <strong>Create a Subscription:</strong> Set up a recurring weekly
+            order
+          </li>
+          <li>
+            <strong>Submit Feedback:</strong> Rate a delivered order with star
+            rating
+          </li>
+          <li>
+            <strong>Check Admin Dashboard:</strong> See the backend control
+            tower view
+          </li>
+          <li>
+            <strong>Test Mobile:</strong> Open on your phone to see responsive
+            design
+          </li>
+        </ol>
+      </div>
+
+      <div class="features" style="margin-top: 40px">
+        <h3>📚 Documentation Available</h3>
+        <div style="display: grid; gap: 16px">
+          <div style="padding: 16px; background: #f9fafb; border-radius: 8px">
+            <strong>📖 VENDOR_PORTAL_README.md</strong> - Complete system
+            overview and user guide
+          </div>
+          <div style="padding: 16px; background: #f9fafb; border-radius: 8px">
+            <strong>🔌 VENDOR_BACKEND_API.md</strong> - Full backend API
+            specification with endpoints
+          </div>
+          <div style="padding: 16px; background: #f9fafb; border-radius: 8px">
+            <strong>🔧 HARDWARE_PLACEMENT_GUIDE.md</strong> - IoT sensor
+            placement and configuration
+          </div>
+          <div style="padding: 16px; background: #f9fafb; border-radius: 8px">
+            <strong>⚙️ BACKEND_REQUIREMENTS.md</strong> - Original backend
+            development brief
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Auto-detect if vendor session exists and redirect
+      if (window.location.pathname.includes("index.html")) {
+        const session = localStorage.getItem("qooa_vendor_session");
+        // Don't auto-redirect, let user choose
+      }
+    </script>
+  </body>
+</html>

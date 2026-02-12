@@ -1,0 +1,76 @@
+<!-- Dashboard view loaded into .main-content -->
+<header class="dashboard-header">
+  <div class="header-left">
+    <h1>Logistics Control Tower</h1>
+    <p>Real-time monitoring • Kano/Jos → Lagos</p>
+    <div id="vendorGreeting" style="margin-top:8px;color:var(--gray);font-size:0.95em;"></div>
+  </div>
+  <div class="header-right">
+    <div style="text-align:right;color:var(--gray);font-size:0.9em;margin-bottom:8px;" id="lastUpdated">Last updated: —</div>
+    <button id="newOrderBtn" class="btn-primary">➕ New Order</button>
+  </div>
+</header>
+
+<!-- WhatsApp Integration Banner -->
+<!-- WhatsApp Integration Banner (full-width) -->
+<div class="whatsapp-banner" role="region" aria-label="WhatsApp ordering">
+  <div class="whatsapp-inner">
+    <div class="whatsapp-left">
+      <div class="whatsapp-icon">💬</div>
+      <div class="whatsapp-texts">
+        <div class="whatsapp-title">📱 Orders on WhatsApp</div>
+        <div class="whatsapp-sub">Place orders instantly — no app downloads. Works on basic phones.</div>
+        <div class="whatsapp-features">Quick ordering • Live tracking • Delivery confirmation</div>
+      </div>
+    </div>
+    <div class="whatsapp-actions">
+      <button onclick="showWhatsAppDemo()" class="btn-whatsapp">📲 View Sample Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Grid -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-info">
+        <h3 id="totalShipments">0</h3>
+        <p>Total Shipments</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🚛</div>
+      <div class="stat-info">
+        <h3 id="inTransit">0</h3>
+        <p>In Transit</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🛡️</div>
+      <div class="stat-info">
+        <h3 id="bioShieldActive">0</h3>
+        <p>Bio-Shield Active</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3 id="completed">0</h3>
+        <p>Completed</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Shipment List -->
+<section class="shipments-section">
+  <h2>Active Shipments</h2>
+  <div id="shipmentsContainer">
+    <!-- JavaScript will inject shipment cards here -->
+    <div class="loading">Loading shipments...</div>
+  </div>
+</section>

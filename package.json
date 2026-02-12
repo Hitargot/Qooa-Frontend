@@ -1,0 +1,10 @@
+{
+  "name": "qooa-frontend",
+  "version": "1.0.0",
+  "description": "Frontend-only package for QOOA Control Tower",
+  "scripts": {
+    "start": "node serve-frontend.js",
+    "lint": "echo \"no lint configured\""
+  },
+  "license": "MIT"
+}

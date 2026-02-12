@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QOOA - Vendor Registration</title>
+    <link rel="stylesheet" href="css/vendor-styles.css" />
+  </head>
+  <body class="onboarding-page">
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+      <button id="langToggle" class="lang-btn">
+        <span class="lang-icon">🌐</span>
+        <span id="currentLang">English</span>
+      </button>
+    </div>
+
+    <!-- Onboarding Container -->
+    <div class="onboarding-container">
+      <div class="onboarding-card">
+        <div class="logo-section">
+          <h1>🍅 QOOA</h1>
+          <p class="tagline" data-lang="tagline">Fresh Tomatoes, Fair Prices</p>
+        </div>
+
+        <h2 data-lang="vendor-registration">Vendor Registration</h2>
+        <p class="subtitle" data-lang="join-qooa">
+          Join the QOOA network today
+        </p>
+
+        <form id="registrationForm">
+          <div class="form-group">
+            <label for="vendorName" data-lang="vendor-name"
+              >Vendor Name / Business Name</label
+            >
+            <input
+              type="text"
+              id="vendorName"
+              name="vendorName"
+              required
+              placeholder="Vendor or business name"
+              data-lang-placeholder="vendor-name-placeholder"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="phoneNumber" data-lang="phone-number"
+              >Phone Number</label
+            >
+            <input
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              placeholder="+234 xxx xxx xxxx"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="whatsappNumber">WhatsApp Number (for notifications)</label>
+            <input
+              type="tel"
+              id="whatsappNumber"
+              name="whatsappNumber"
+              placeholder="+234 80x xxx xxxx"
+              aria-describedby="whatsappHelp"
+            />
+            <small id="whatsappHelp" class="form-help">Please provide the phone number you use on WhatsApp including country code (e.g. +2348012345678). This number will be used to send WhatsApp notifications about orders and tracking.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="email" data-lang="email"
+              >Email Address</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              placeholder="you@business.com"
+              data-lang-placeholder="email-placeholder"
+            />
+          </div>
+
+          <div class="form-group" style="position:relative">
+            <label for="password" data-lang="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder="At least 8 characters, mixed case and a number"
+            />
+            <button type="button" id="togglePassword" title="Show password" style="position:absolute; right:12px; top:36px; background:none; border:none; cursor:pointer;">👁️</button>
+          </div>
+
+          <div class="form-group">
+            <label for="marketCluster" data-lang="market-location"
+              >Market Location / Cluster</label
+            >
+            <select id="marketCluster" name="marketCluster" required>
+              <option value="" data-lang="select-market">
+                -- Select Your Market --
+              </option>
+              <option value="Mile 12">Mile 12 Market, Lagos</option>
+              <option value="Oshodi">Oshodi Market, Lagos</option>
+              <option value="Oyingbo">Oyingbo Market, Lagos</option>
+              <option value="Ikeja">Ikeja</option>
+              <option value="Mushin">Mushin</option>
+              <option value="Other">Other (Please specify)</option>
+              <option value="other">Other (Please specify)</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="otherMarketGroup" style="display: none">
+            <label for="otherMarket" data-lang="specify-market"
+              >Specify Market Name</label
+            >
+            <input
+              type="text"
+              id="otherMarket"
+              name="otherMarket"
+              placeholder="Specify your market name (e.g. Mile 12)"
+              data-lang-placeholder="market-name-placeholder"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="stallNumber" data-lang="stall-number"
+              >Stall Number / Shop Address</label
+            >
+            <input
+              type="text"
+              id="stallNumber"
+              name="stallNumber"
+              required
+              placeholder="Stall/shop address (e.g. Stall 12, Block A)"
+              data-lang-placeholder="stall-placeholder"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="businessType" data-lang="business-type"
+              >Business Type</label
+            >
+            <select id="businessType" name="businessType" required>
+              <option value="" data-lang="select-type">
+                -- Select Type --
+              </option>
+              <option value="mama-put" data-lang="mama-put">
+                Mama Put / Food Seller
+              </option>
+              <option value="retailer" data-lang="retailer">Retailer</option>
+              <option value="wholesaler" data-lang="wholesaler">Wholesaler</option>
+              <option value="restaurant" data-lang="restaurant">
+                Restaurant Owner
+              </option>
+              <option value="caterer" data-lang="caterer">Catering / Caterer</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label data-lang="typical-order">Typical Order Size (Weekly)</label>
+            <select id="orderSize" name="orderSize" required>
+              <option value="1-2" data-lang="small-order">1-2 crates</option>
+              <option value="3-5" data-lang="medium-order">3-5 crates</option>
+              <option value="6-10" data-lang="large-order">6-10 crates</option>
+              <option value="10+" data-lang="bulk-order">
+                10+ crates (Bulk)
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" id="terms" name="terms" required />
+              <span data-lang="agree-terms"
+                >I agree to QOOA's terms and conditions</span
+              >
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-primary btn-large"
+            data-lang="register"
+          >
+            Register Now
+          </button>
+
+          <p class="form-footer">
+            <span data-lang="have-account">Already have an account?</span>
+            <a href="login.html" data-lang="login-here">Login here</a>
+          </p>
+        </form>
+      </div>
+
+      <!-- Info Panel -->
+      <div class="info-panel">
+        <h3 data-lang="why-qooa">Why Join QOOA?</h3>
+        <ul class="benefits-list">
+          <li>
+            <span class="benefit-icon">🌡️</span>
+            <div>
+              <strong data-lang="benefit-fresh"
+                >Guaranteed Fresh Tomatoes</strong
+              >
+              <p data-lang="benefit-fresh-desc">
+                Temperature-monitored from farm to your stall
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="benefit-icon">💰</span>
+            <div>
+              <strong data-lang="benefit-prices">Stable, Fair Prices</strong>
+              <p data-lang="benefit-prices-desc">
+                No surprise price hikes, transparent pricing
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="benefit-icon">🚚</span>
+            <div>
+              <strong data-lang="benefit-tracking">Real-Time Tracking</strong>
+              <p data-lang="benefit-tracking-desc">
+                Know exactly when your order arrives
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="benefit-icon">📱</span>
+            <div>
+              <strong data-lang="benefit-easy">Easy Mobile Ordering</strong>
+              <p data-lang="benefit-easy-desc">
+                Order from your phone anytime, anywhere
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+      <div class="modal-content">
+        <div class="success-animation">✅</div>
+        <h2 data-lang="registration-success">Registration Successful!</h2>
+        <p data-lang="success-message">
+          Welcome to QOOA! Your vendor account has been created successfully.
+        </p>
+         <p data-lang="success-note">
+           Please check your email and click the verification link we sent to activate your account. Once verified you can log in using your phone number and password.
+         </p>
+        <button
+          class="btn-primary btn-large"
+          id="goToLoginBtn"
+          data-lang="go-to-login"
+        >
+          Go to Login
+        </button>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+  <script src="js/vendor-translations.js"></script>
+  <script src="js/alerts.js"></script>
+    <script>
+      // Configure backend URL for the frontend. If you serve the frontend
+      // from a static server, set FRONTEND_URL env and ensure CORS allows it.
+      // Default to localhost:3000 where the backend runs during development.
+      window.BACKEND_URL = window.BACKEND_URL || "http://localhost:3000";
+    </script>
+    <script src="js/vendor-onboarding.js"></script>
+  </body>
+</html>

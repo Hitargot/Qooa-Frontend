@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QOOA Control Tower - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="dashboard-page">
+    <!-- Sidebar placeholder — loaded from components/sidebar.html -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Main Content: views will be loaded into this container -->
+    <main class="main-content"></main>
+
+    <!-- Truck Modal (Hidden by default) -->
+    <div id="truckModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h2>Live Telemetry - <span id="modalShipmentId">---</span></h2>
+            <p style="color: #6b7280; margin-top: 5px">
+              Truck: <span id="modalTruckId">---</span>
+            </p>
+          </div>
+          <button class="modal-close" onclick="closeTruckModal()">
+            &times;
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="telemetry-grid">
+            <!-- Current Readings -->
+            <div class="telemetry-current">
+              <h3>Current Sensor Readings</h3>
+              <div id="currentReadings">
+                <!-- JavaScript will inject sensor cards here -->
+                <div class="loading">Loading telemetry...</div>
+              </div>
+            </div>
+
+            <!-- Journey History -->
+            <div class="telemetry-history">
+              <h3>Journey Timeline</h3>
+              <div id="telemetryTimeline" class="timeline">
+                <!-- JavaScript will inject timeline items -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button onclick="closeTruckModal()" class="btn-secondary">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Modal (Hidden by default) -->
+    <div id="orderModal" class="modal" style="display: none">
+      <div class="modal-content modal-small">
+        <div class="modal-header">
+          <h2>Place New B2B Order</h2>
+          <button class="modal-close" onclick="closeOrderModal()">
+            &times;
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form id="orderForm">
+            <div class="form-group">
+              <label for="orderOrigin">Origin Hub</label>
+              <select id="orderOrigin" required>
+                <option value="Kano Hub">Kano Hub</option>
+                <option value="Jos Hub">Jos Hub</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="orderDestination">Destination</label>
+              <select id="orderDestination" required>
+                <option value="Lagos (Mile 12 Market)">
+                  Lagos (Mile 12 Market)
+                </option>
+                <option value="Lagos (Oshodi Market)">
+                  Lagos (Oshodi Market)
+                </option>
+                <option value="Port Harcourt Market">
+                  Port Harcourt Market
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="orderCrates">Number of Crates</label>
+              <input
+                type="number"
+                id="orderCrates"
+                min="10"
+                max="100"
+                value="30"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="orderBioShield" checked />
+                Apply Bio-Shield Coating
+              </label>
+            </div>
+
+            <div class="order-summary">
+              <h4>Order Summary</h4>
+              <p><strong>Estimated Transit Time:</strong> 18-20 hours</p>
+              <p><strong>Live Tracking:</strong> Real-time IoT monitoring</p>
+              <p>
+                <strong>Quality Assurance:</strong> Digital Freshness
+                Certificate upon arrival
+              </p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn-primary">
+                ✅ Confirm Order
+              </button>
+              <button
+                type="button"
+                onclick="closeOrderModal()"
+                class="btn-secondary"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!-- Toast notification -->
+    <div id="toast" aria-live="polite" style="position:fixed;right:20px;bottom:20px;display:none;z-index:3000;padding:12px 18px;border-radius:8px;background:#111;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.2);"></div>
+
+    <!-- Reusable Modal (single source for dialogs) -->
+    <div id="reusableModal" class="modal" style="display:none" aria-hidden="true">
+      <div id="reusableModalContent" class="modal-content">
+        <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h3 id="reusableModalTitle">Title</h3>
+          <button class="modal-close" id="reusableModalClose">&times;</button>
+        </div>
+        <div class="modal-body" id="reusableModalBody" style="text-align:left;">
+          <!-- injected content -->
+        </div>
+        <div class="modal-footer" id="reusableModalFooter" style="text-align:right;margin-top:12px;">
+          <!-- injected footer -->
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!-- Load sidebar component and then JavaScript Files -->
+    <script>
+      (async function loadSidebar(){
+        try{
+          const res = await fetch('/components/sidebar.html');
+          if(res.ok){
+            const html = await res.text();
+            const placeholder = document.getElementById('sidebar-placeholder');
+            if(placeholder){
+              placeholder.innerHTML = html;
+              // If dashboard script already loaded, re-run event binding
+              try { if (typeof setupEventListeners === 'function') setupEventListeners(); } catch(e) { /* ignore */ }
+            }
+          } else {
+            console.warn('Sidebar component not found:', res.status);
+          }
+        }catch(e){
+          console.warn('Failed to load sidebar component', e);
+        }
+      })();
+    </script>
+
+    <!-- JavaScript Files -->
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

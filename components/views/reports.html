@@ -1,0 +1,47 @@
+<!-- Reports view loaded into .main-content -->
+<header class="dashboard-header">
+  <div class="header-left">
+    <h1>📋 Reports & Analytics</h1>
+    <p>Performance metrics and quality reports</p>
+  </div>
+</header>
+
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-info">
+        <h3 id="totalShipments">0</h3>
+        <p>Total Shipments</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🚛</div>
+      <div class="stat-info">
+        <h3 id="inTransit">0</h3>
+        <p>In Transit</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3 id="completed">0</h3>
+        <p>Completed</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🛡️</div>
+      <div class="stat-info">
+        <h3 id="bioShieldActive">0</h3>
+        <p>Bio-Shield Active</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="shipments-section" style="margin-top:24px;">
+  <h2>Quality Reports</h2>
+  <div id="reportsTableContainer" style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <p class="loading">Loading reports...</p>
+  </div>
+</section>

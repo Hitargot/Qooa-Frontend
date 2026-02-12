@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Verify Email - QOOA</title>
+    <link rel="stylesheet" href="css/vendor-styles.css" />
+  </head>
+  <body class="onboarding-page">
+    <div class="onboarding-container">
+      <div class="onboarding-card">
+        <div id="status" class="verify-status">
+          <h2 id="statusTitle">Verifying your email…</h2>
+          <p id="statusMessage">Please wait while we verify your account.</p>
+          <div id="actions" style="margin-top:16px; display:none;">
+            <a id="loginLink" class="btn-primary" href="login.html">Go to Login</a>
+            <a id="homeLink" class="btn-secondary" href="index.html" style="margin-left:8px;">Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Ensure BACKEND_URL is available
+      window.BACKEND_URL = window.BACKEND_URL || 'http://localhost:3000';
+    </script>
+    <script src="js/verify-email.js"></script>
+  </body>
+</html>

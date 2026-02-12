@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QOOA - Single File Frontend</title>
+    <style>
+/* BEGIN: Inlined css/styles.css */
+:root {
+  --primary: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --dark: #1f2937;
+  --dark-secondary: #374151;
+  --gray: #6b7280;
+  --light-gray: #e5e7eb;
+  --bg-light: #f3f4f6;
+  --white: #ffffff;
+  --success: #10b981;
+  --info: #3b82f6;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: var(--dark);
+  background-color: var(--bg-light);
+}
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%);
+}
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 20px;
+}
+.login-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+.logo-section { text-align: center; margin-bottom: 30px; }
+.logo-section h1 { font-size: 2.5em; color: var(--primary); margin-bottom: 10px; }
+.tagline { color: var(--gray); font-size: 0.9em; }
+.login-card h2 { text-align: center; color: var(--dark); margin-bottom: 10px; }
+.subtitle { text-align: center; color: var(--gray); margin-bottom: 30px; font-size: 0.95em; }
+.login-footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--light-gray); color: var(--gray); font-size: 0.85em; }
+.btn-primary { padding: 12px 24px; background: var(--primary); color: var(--white); border: none; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); }
+.btn-primary:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4); }
+/* Minimal additional styles for the demo */
+.form-group { margin-bottom: 16px; }
+.form-group label { display:block; margin-bottom:6px; color:var(--dark); }
+.form-group input { width:100%; padding:10px 12px; border-radius:6px; border:1px solid var(--light-gray); }
+.login-card .btn-primary { width:100%; }
+/* END: Inlined css/styles.css */
+    </style>
+  </head>
+  <body class="login-page">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="logo-section">
+          <h1>🍅 QOOA</h1>
+          <p class="tagline">The Invisible Supply Chain for Perishable Goods</p>
+        </div>
+
+        <h2>B2B Vendor Portal</h2>
+        <p class="subtitle">Secure Login</p>
+
+        <form id="loginForm">
+          <div class="form-group">
+              <label for="phoneNumber">Phone Number</label>
+              <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+234 80x xxx xxxx" required />
+            </div>
+
+            <div class="form-group" style="position:relative">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" placeholder="Enter your password" required />
+              <button type="button" id="togglePassword" title="Show password" style="position:absolute; right:8px; top:36px; background:none; border:none; cursor:pointer;">👁️</button>
+            </div>
+
+            <button type="submit" class="btn-primary">Login to Control Tower</button>
+        </form>
+
+        <div class="login-links" style="margin-top:16px; display:flex; justify-content:space-between; gap:12px; align-items:center;">
+          <a href="signup.html" style="color:var(--primary); font-weight:600; text-decoration:none;">Sign up</a>
+          <a href="forgot-password.html" style="color:var(--gray); text-decoration:none;">Forgot password?</a>
+        </div>
+
+        <footer class="login-footer">
+          <p>Empowering Farmers. Stabilizing Prices. Eliminating Waste.</p>
+        </footer>
+      </div>
+    </div>
+
+    <script src="js/alerts.js"></script>
+    <script>
+      // BACKEND_URL default
+      const BACKEND_URL = 'http://localhost:3000';
+
+      // Password toggle
+      document.getElementById('togglePassword').addEventListener('click', function () {
+        const p = document.getElementById('password');
+        if (p.type === 'password') { p.type = 'text'; this.textContent = '🙈'; } else { p.type = 'password'; this.textContent = '👁️'; }
+      });
+
+      // Login handler - calls backend /api/auth/login
+      document.getElementById('loginForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        const password = document.getElementById('password').value;
+
+        try {
+          const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phoneNumber, password }),
+          });
+
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            customAlert(data.message || 'Login failed', 'Login');
+            return;
+          }
+
+          // Save vendor session (token + vendor)
+          localStorage.setItem(
+            'qooa_vendor_session',
+            JSON.stringify({ token: data.token, vendor: data.vendor })
+          );
+
+          // Redirect to dashboard
+          window.location.href = 'dashboard.html';
+        } catch (err) {
+          console.error(err);
+          customAlert('Network error', 'Login');
+        }
+      });
+    </script>
+  </body>
+</html>

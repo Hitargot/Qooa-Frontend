@@ -1,0 +1,194 @@
+<div style="max-width:900px; margin: 24px;">
+  <header class="dashboard-header" style="margin:0;padding:16px;border:none;">
+    <div class="header-left">
+      <h1>⚙️ Settings</h1>
+      <p>Configure your dashboard preferences</p>
+    </div>
+  </header>
+
+  <section style="background:var(--white); border-radius:8px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+    <form id="settingsForm">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+        <div>
+          <label style="display:block;font-weight:600;margin-bottom:8px;">Notification Preferences</label>
+          <label style="display:block;margin-bottom:8px;">
+            <input type="checkbox" id="emailAlerts"> Email alerts for critical temperature
+          </label>
+          <label style="display:block;margin-bottom:8px;">
+            <input type="checkbox" id="smsAlerts"> SMS alerts for gas level warnings
+          </label>
+          <label style="display:block;margin-bottom:8px;">
+            <input type="checkbox" id="whatsappAlerts"> WhatsApp notifications
+          </label>
+          <label style="display:block;margin-top:8px;">
+            <input type="checkbox" id="overlayModals"> Use overlay-style modals (centered)
+          </label>
+
+          <div style="margin-top:12px;">
+            <label style="display:block;font-weight:600;margin-bottom:6px;">Default modal size</label>
+            <select id="defaultModalSize" style="padding:8px;border:1px solid var(--light-gray);border-radius:6px;">
+              <option value="regular">Regular (centered)</option>
+              <option value="small">Small (compact)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label style="display:block;font-weight:600;margin-bottom:8px;">Quality Thresholds</label>
+          <div style="display:grid;gap:12px;">
+            <div>
+              <label style="display:block;font-size:13px;color:var(--gray);margin-bottom:4px;">Critical Temperature (°C)</label>
+              <input type="number" id="criticalTemp" min="15" max="35" style="width:100%;padding:8px;border:1px solid var(--light-gray);border-radius:6px;" />
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;color:var(--gray);margin-bottom:4px;">Critical Gas Level (ppm)</label>
+              <input type="number" id="criticalGas" min="50" max="500" style="width:100%;padding:8px;border:1px solid var(--light-gray);border-radius:6px;" />
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <label style="display:block;font-weight:600;margin-bottom:8px;">Hub Configuration</label>
+            <div style="background:#f9fafb;padding:12px;border-radius:6px;">
+              <p style="font-size:13px;color:var(--gray);margin-bottom:8px;">Active Hubs:</p>
+              <p style="font-size:14px;">📍 Kano Hub - Active</p>
+              <p style="font-size:14px;">📍 Jos Hub - Active</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding-top:18px;border-top:1px solid var(--light-gray);margin-top:18px;display:flex;gap:12px;align-items:center;">
+        <button type="submit" class="btn-primary" id="saveSettingsBtn">Save Settings</button>
+        <button type="button" class="btn-secondary" onclick="resetSettings()">Reset to Default</button>
+        <div style="margin-left:auto;">
+          <button type="button" id="changePasswordBtn" class="btn-secondary">Change Password</button>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>
+
+<script>
+// Populate current values from localStorage when this view is injected
+(function(){
+  try{
+    const s = JSON.parse(localStorage.getItem('qooa_settings')) || {};
+    document.getElementById('emailAlerts').checked = !!s.emailAlerts;
+    document.getElementById('smsAlerts').checked = !!s.smsAlerts;
+    document.getElementById('whatsappAlerts').checked = !!s.whatsappAlerts;
+    document.getElementById('overlayModals').checked = s.overlayModals !== false;
+    document.getElementById('defaultModalSize').value = s.defaultModalSize || 'regular';
+    document.getElementById('criticalTemp').value = s.criticalTemp || 28;
+    document.getElementById('criticalGas').value = s.criticalGas || 300;
+  }catch(e){/* ignore */}
+
+  // Attach submit handler to call the shared saveSettings function
+  const f = document.getElementById('settingsForm');
+  if(f){
+    f.addEventListener('submit', function(e){
+      // delegate to global saveSettings if present
+      if (typeof saveSettings === 'function') return saveSettings(e);
+      e.preventDefault();
+    });
+  }
+
+  // Wire change password button to show a local modal (Old password + New + Confirm)
+  const changeBtn = document.getElementById('changePasswordBtn');
+  if (changeBtn) {
+    try{ console && console.log && console.log('[settings] wiring changePasswordBtn'); }catch(e){}
+    changeBtn.addEventListener('click', function(){
+      try{
+        console && console.log && console.log('[settings] changePasswordBtn clicked');
+        
+
+        // Build a small inline modal so settings can be changed in-context.
+        const existing = document.getElementById('settings-change-password-modal');
+        if (existing) { existing.style.display = 'block'; existing.querySelector('input')?.focus(); return; }
+
+          const modal = document.createElement('div');
+        modal.id = 'settings-change-password-modal';
+        modal.style = 'position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:9999;';
+        modal.innerHTML = `
+          <div style="background:var(--white);padding:18px;border-radius:8px;min-width:320px;max-width:420px;box-shadow:0 6px 24px rgba(0,0,0,0.12);">
+            <h3 style="margin-top:0;margin-bottom:8px;">Change Password</h3>
+              <form id="settingsChangePasswordForm">
+              <div style="display:grid;gap:8px;">
+                <label for="settingsCurrentPassword" style="font-size:13px;color:var(--gray);">Old password</label>
+                <input id="settingsCurrentPassword" name="currentPassword" type="password" placeholder="Enter your current password" required style="padding:10px;border:1px solid var(--light-gray);border-radius:6px;" />
+
+                <label for="settingsNewPassword" style="font-size:13px;color:var(--gray);">New password</label>
+                <input id="settingsNewPassword" name="newPassword" type="password" placeholder="Enter new password" required style="padding:10px;border:1px solid var(--light-gray);border-radius:6px;" />
+
+                <label for="settingsConfirmNewPassword" style="font-size:13px;color:var(--gray);">Confirm new password</label>
+                <input id="settingsConfirmNewPassword" name="confirmNewPassword" type="password" placeholder="Confirm new password" required style="padding:10px;border:1px solid var(--light-gray);border-radius:6px;" />
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px;">
+                  <button type="button" id="settingsChangePwdCancel" class="btn-secondary">Cancel</button>
+                  <button type="submit" class="btn-primary">Save</button>
+                </div>
+                <div id="settingsChangePwdErr" style="color:#b00020;font-size:13px;display:none;margin-top:6px;"></div>
+              </div>
+            </form>
+          </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // cancel handler
+        modal.querySelector('#settingsChangePwdCancel').addEventListener('click', function(){ modal.style.display = 'none'; });
+
+        // submit handler: call authenticated change-password endpoint
+          modal.querySelector('#settingsChangePasswordForm')?.addEventListener('submit', async function(e){
+          e.preventDefault();
+          const errEl = document.getElementById('settingsChangePwdErr');
+          errEl.style.display = 'none';
+            const currentPassword = modal.querySelector('#settingsCurrentPassword').value.trim();
+            const newPassword = modal.querySelector('#settingsNewPassword').value.trim();
+            const confirm = modal.querySelector('#settingsConfirmNewPassword').value.trim();
+          if (!currentPassword) return errEl.textContent = 'Please enter your old password', errEl.style.display = 'block';
+          if (newPassword.length < 6) return errEl.textContent = 'New password must be at least 6 characters', errEl.style.display = 'block';
+          if (newPassword !== confirm) return errEl.textContent = 'New passwords do not match', errEl.style.display = 'block';
+
+          // get token from localStorage session
+          try{
+            const sess = JSON.parse(localStorage.getItem('qooa_vendor_session') || localStorage.getItem('qooa_session') || '{}');
+            const token = sess && sess.token;
+            if (!token) {
+              // fall back to global modal if available
+              if (typeof customAlert === 'function') { customAlert('You must be logged in to change your password.', 'Not authenticated'); }
+              else alert('You must be logged in to change your password.');
+              return;
+            }
+
+            const resp = await fetch((typeof BACKEND_URL!=='undefined'?BACKEND_URL:(location.origin.replace(/:\/\/[0-9.]+:?\d*$/,'')||'http://localhost:3000')) + '/api/vendors/change-password', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+              body: JSON.stringify({ currentPassword, newPassword })
+            });
+
+            const data = await resp.json();
+            if (!resp.ok) {
+              errEl.textContent = (data && data.message) ? data.message : 'Failed to change password';
+              errEl.style.display = 'block';
+              return;
+            }
+
+            // success: close modal and show toast/alert
+            modal.style.display = 'none';
+            if (typeof showToast === 'function') showToast('Password changed successfully');
+            else if (typeof customAlert === 'function') customAlert('Password changed successfully');
+            else alert('Password changed successfully');
+          }catch(err){
+            errEl.textContent = err.message || 'Network error';
+            errEl.style.display = 'block';
+          }
+        });
+
+        // focus first input
+        setTimeout(()=> modal.querySelector('input')?.focus(),60);
+      }catch(ex){
+        console && console.error && console.error('[settings] change password error', ex);
+      }
+    });
+  }
+})();
+</script>

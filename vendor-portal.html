@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QOOA - Vendor Portal</title>
+    <link rel="stylesheet" href="css/vendor-styles.css" />
+  </head>
+  <body>
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+      <button id="langToggle" class="lang-btn">
+        <span class="lang-icon">🌐</span>
+        <span id="currentLang">English</span>
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header class="vendor-header">
+      <div class="header-content">
+        <div class="logo">
+          <h1>🍅 QOOA</h1>
+          <p data-lang="tagline">Fresh Tomatoes, Fair Prices</p>
+        </div>
+        <div class="vendor-info">
+          <span data-lang="welcome">Welcome</span>,
+          <span id="vendorName">Loading...</span>
+          <button id="logoutBtn" class="btn-logout" data-lang="logout">
+            Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="vendor-main">
+      <!-- Quick Stats -->
+      <section class="quick-stats">
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <p class="stat-label" data-lang="current-price">Current Price</p>
+            <p class="stat-value" id="currentPrice">₦--,---</p>
+            <span class="stat-unit" data-lang="per-crate">per QOOA crate</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-info">
+            <p class="stat-label" data-lang="active-orders">Active Orders</p>
+            <p class="stat-value" id="activeOrders">0</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-info">
+            <p class="stat-label" data-lang="quality-score">Quality Score</p>
+            <p class="stat-value" id="qualityScore">5.0</p>
+            <span class="stat-unit">/5.0</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Order Section -->
+      <section class="order-section">
+        <div class="section-header">
+          <h2 data-lang="quick-order">Quick Order</h2>
+          <p data-lang="order-desc">
+            Order fresh tomatoes delivered directly to your stall
+          </p>
+        </div>
+
+        <div class="order-card">
+          <div class="order-form">
+            <div class="form-group">
+              <label data-lang="num-crates">Number of Crates</label>
+              <div class="quantity-selector">
+                <button class="qty-btn" id="decreaseQty">-</button>
+                <input
+                  type="number"
+                  id="crateQuantity"
+                  value="1"
+                  min="1"
+                  max="100"
+                />
+                <button class="qty-btn" id="increaseQty">+</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label data-lang="delivery-time">Preferred Delivery Time</label>
+              <select id="deliveryTime">
+                <option value="morning" data-lang="morning">
+                  Morning (6AM - 10AM)
+                </option>
+                <option value="midday" data-lang="midday">
+                  Midday (10AM - 2PM)
+                </option>
+                <option value="afternoon" data-lang="afternoon">
+                  Afternoon (2PM - 6PM)
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label data-lang="delivery-date">Delivery Date</label>
+              <input type="date" id="deliveryDate" />
+            </div>
+
+            <div class="order-summary">
+              <div class="summary-row">
+                <span data-lang="total-crates">Total Crates:</span>
+                <strong id="summaryQty">1</strong>
+              </div>
+              <div class="summary-row">
+                <span data-lang="unit-price">Unit Price:</span>
+                <strong id="summaryUnitPrice">₦--,---</strong>
+              </div>
+              <div class="summary-row total">
+                <span data-lang="total-price">Total Price:</span>
+                <strong id="summaryTotal">₦--,---</strong>
+              </div>
+            </div>
+
+            <button class="btn-primary btn-large" id="placeOrderBtn">
+              <span data-lang="place-order">Place Order</span> 🛒
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Subscription Section -->
+      <section class="subscription-section">
+        <div class="section-header">
+          <h2 data-lang="standing-order">Standing Order (Subscription)</h2>
+          <p data-lang="subscription-desc">Set up automatic recurring orders</p>
+        </div>
+
+        <div class="subscription-card">
+          <div id="subscriptionStatus" class="subscription-status">
+            <p data-lang="no-subscription">No active subscription</p>
+            <button
+              class="btn-secondary"
+              id="setupSubscriptionBtn"
+              data-lang="setup-subscription"
+            >
+              Setup Subscription
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Orders / Tracking -->
+      <section class="tracking-section">
+        <div class="section-header">
+          <h2 data-lang="my-orders">My Orders</h2>
+          <div class="filter-tabs">
+            <button
+              class="tab-btn active"
+              data-status="active"
+              data-lang="active"
+            >
+              Active
+            </button>
+            <button
+              class="tab-btn"
+              data-status="completed"
+              data-lang="completed"
+            >
+              Completed
+            </button>
+          </div>
+        </div>
+
+        <div id="ordersContainer" class="orders-container">
+          <!-- Orders will be dynamically inserted here -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Order Detail Modal -->
+    <div id="orderModal" class="modal">
+      <div class="modal-content modal-large">
+        <button class="modal-close">&times;</button>
+        <h2 data-lang="order-details">Order Details</h2>
+        <div id="orderDetailContent">
+          <!-- Dynamic content -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscription Setup Modal -->
+    <div id="subscriptionModal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <h2 data-lang="setup-subscription">Setup Subscription</h2>
+        <form id="subscriptionForm">
+          <div class="form-group">
+            <label data-lang="num-crates">Number of Crates</label>
+            <input type="number" id="subCrates" min="1" value="2" required />
+          </div>
+          <div class="form-group">
+            <label data-lang="frequency">Frequency</label>
+            <select id="subFrequency" required>
+              <option value="monday" data-lang="every-monday">
+                Every Monday
+              </option>
+              <option value="tuesday" data-lang="every-tuesday">
+                Every Tuesday
+              </option>
+              <option value="wednesday" data-lang="every-wednesday">
+                Every Wednesday
+              </option>
+              <option value="thursday" data-lang="every-thursday">
+                Every Thursday
+              </option>
+              <option value="friday" data-lang="every-friday">
+                Every Friday
+              </option>
+              <option value="saturday" data-lang="every-saturday">
+                Every Saturday
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-lang="delivery-time">Preferred Delivery Time</label>
+            <select id="subTime" required>
+              <option value="morning" data-lang="morning">
+                Morning (6AM - 10AM)
+              </option>
+              <option value="midday" data-lang="midday">
+                Midday (10AM - 2PM)
+              </option>
+              <option value="afternoon" data-lang="afternoon">
+                Afternoon (2PM - 6PM)
+              </option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            class="btn-primary btn-large"
+            data-lang="activate-subscription"
+          >
+            Activate Subscription
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <h2 data-lang="rate-order">Rate Your Order</h2>
+        <div id="feedbackContent">
+          <p data-lang="rate-quality">How was the quality of your tomatoes?</p>
+          <div class="star-rating">
+            <span class="star" data-rating="1">⭐</span>
+            <span class="star" data-rating="2">⭐</span>
+            <span class="star" data-rating="3">⭐</span>
+            <span class="star" data-rating="4">⭐</span>
+            <span class="star" data-rating="5">⭐</span>
+          </div>
+          <div class="form-group">
+            <label data-lang="feedback-comments">Comments (Optional)</label>
+            <textarea
+              id="feedbackComments"
+              rows="3"
+              placeholder="Tell us about your experience (optional)"
+              data-lang-placeholder="feedback-placeholder"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label data-lang="report-damage">Report Damage (Optional)</label>
+            <input type="file" id="damagePhoto" accept="image/*" />
+            <p class="form-hint" data-lang="damage-hint">
+              Upload a photo of damaged produce for partial refund
+            </p>
+          </div>
+          <button
+            class="btn-primary btn-large"
+            id="submitFeedbackBtn"
+            data-lang="submit-feedback"
+          >
+            Submit Feedback
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <h2 data-lang="payment">Payment</h2>
+        <div id="paymentContent">
+          <!-- Dynamic payment content -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/vendor-translations.js"></script>
+  <script src="js/alerts.js"></script>
+  <script src="js/vendor-portal.js"></script>
+  </body>
+</html>

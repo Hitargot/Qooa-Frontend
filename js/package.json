@@ -1,0 +1,9 @@
+{
+  "name": "qooa-frontend",
+  "version": "1.0.0",
+  "description": "Helper package.json for running the single-file frontend server",
+  "scripts": {
+    "serve-frontend": "node frontend/serve-frontend.js"
+  },
+  "license": "MIT"
+}
