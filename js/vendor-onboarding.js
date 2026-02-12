@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const successModal = document.getElementById('successModal');
 
   // Ensure BACKEND_URL is set (signup.html sets it or default to localhost)
-    const backend = window.BACKEND_URL || 'http://localhost:3000';
-    const BACKEND_URL = 'https://qooa-865bc6c8db3f.herokuapp.com'|| "http://localhost:3000";
+  // Prefer a runtime override via window.BACKEND_URL, otherwise use deployed backend
+  const BACKEND_URL = window.BACKEND_URL || 'https://qooa-865bc6c8db3f.herokuapp.com';
+  const backend = BACKEND_URL;
 
   if (regForm) {
     regForm.addEventListener('submit', async function (e) {

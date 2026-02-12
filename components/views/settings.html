@@ -159,7 +159,7 @@
               return;
             }
 
-            const resp = await fetch((typeof BACKEND_URL!=='undefined'?BACKEND_URL:(location.origin.replace(/:\/\/[0-9.]+:?\d*$/,'')||'http://localhost:3000')) + '/api/vendors/change-password', {
+            const resp = await fetch((typeof BACKEND_URL!=='undefined'?BACKEND_URL:(location.origin.replace(/:\/\/[0-9.]+:?\d*$/,'')||'https://qooa-865bc6c8db3f.herokuapp.com')) + '/api/vendors/change-password', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
               body: JSON.stringify({ currentPassword, newPassword })

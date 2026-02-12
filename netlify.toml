@@ -1,0 +1,10 @@
+[build]
+  # publish this folder when Netlify reads config from inside the frontend directory
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true

@@ -1046,7 +1046,7 @@ function handleChangePasswordSubmit(e) {
     showToast('New passwords do not match');
     return;
   }
-  const backend = window.BACKEND_URL || 'http://localhost:3000';
+  const backend = window.BACKEND_URL || 'https://qooa-865bc6c8db3f.herokuapp.com';
 
   // Determine the form and prefer authenticated change endpoint when the form contains a current-password input
   const formEl = document.getElementById('changePasswordForm');
